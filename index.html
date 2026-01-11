@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -677,17 +678,7 @@
 }
 
 /* ICON */
-.skill-icon {
-    width: 46px;
-    height: 46px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #8b5cf6, #22d3ee);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 20px;
-}
+/* SKILL ICON – PERFECT CIRCLE */
 
 /* ROW */
 .skill-row {
@@ -699,7 +690,22 @@
     justify-content: space-between;
     font-size: 14px;
     margin-bottom: 6px;
+}/* SKILL ICON – SIMPLE NAVY ICON ONLY */
+.skill-icon {
+    width: auto;
+    height: auto;
+    background: none;
+    border: none;
+    box-shadow: none;
+
+    color: #8113d6; /* NAVY BLUE */
+    font-size: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
 
 /* BAR */
 .skill-track {
@@ -1067,7 +1073,7 @@
 }
 
 .skill-percent {
-    color: #c7d2fe;
+    color: #feffff;
     font-size: 14px;
 }
 
@@ -1103,7 +1109,7 @@
 }
 
 .skill-percent {
-    color: #c7d2fe;
+    color: #594a6c;
     font-size: 14px;
 }
 
@@ -1513,6 +1519,30 @@
 }
 #contact .section-title::after {
     background: linear-gradient(90deg, #a78bfa, #a78bfa);
+}
+/* REMOVE MOBILE TAP HIGHLIGHT */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* REMOVE FOCUS OUTLINE ON ICONS & LINKS */
+a, button, .social-link {
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* REMOVE ANDROID FOCUS BACKGROUND */
+a:focus,
+a:active,
+button:focus,
+button:active {
+    background: none;
+    outline: none;
+}
+.logo:active,
+.logo:focus {
+    color: inherit;
+    background: none;
 }
 
     </style>
@@ -2076,9 +2106,9 @@
     <footer>
         <div class="container">
             <div class="social-links">
-                <a href="#" class="social-link"><i class="fab fa-github"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                <a href="https://github.com/Ajay-naik19" class="social-link"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/ajaynaikm" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://www.instagram.com/aj_rathod.m?igsh=MWFrcGphY2xzeW8xcg==" class="social-link"><i class="fab fa-instagram"></i></a>
             </div>
             <p class="copyright">© 2026 Ajay Naik M. Built with💜</p>
         </div>
@@ -2207,24 +2237,32 @@
             });
         });
 
-        // Form submission
-        const contactForm = document.getElementById('contactForm');
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            // Get form values
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-            
-            // In a real application, you would send this data to a server
-            // For this demo, we'll just show an alert
-            alert(`Thank you for your message, ${name}! I'll get back to you at ${email} as soon as possible.`);
-            
-            // Reset form
-            contactForm.reset();
-        });
+        // Form submission<script>
+(function () {
+    emailjs.init("IRrJLtxEaelkPqSZ0"); // 🔴 replace with EmailJS Public Key
+})();
 
+const contactForm = document.getElementById("contactForm");
+
+contactForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    emailjs.send("service_6uf07ht", "template_ywr9dvz", {
+        from_name: document.getElementById("name").value,
+        from_email: document.getElementById("email").value,
+        message: document.getElementById("message").value,
+    })
+    .then(() => {
+        alert("✅ Message sent successfully!");
+        contactForm.reset();
+    })
+    .catch((error) => {
+        console.error("EmailJS Error:", error);
+        alert("❌ Failed to send message. Please try again.");
+    });
+});
+</script>
+<script>
         // Initialize header scroll class
         window.dispatchEvent(new Event('scroll'));
         
@@ -2294,7 +2332,10 @@ document.querySelectorAll('.skill-fill').forEach(bar => {
         bar.style.boxShadow = 'none';
     }
 });
-</script>
 
+
+
+</script>
+</script>
 </body>
 </html>
