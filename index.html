@@ -625,150 +625,236 @@
         }
 
         /* Skills Section */
-
-        /* SKILLS GRID */
 .skills-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 cards in one row */
-    gap: 30px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
     align-items: stretch;
 }
 
-/* SKILL CARD */
+/* Compact modern skill cards */
 .skill-card {
-    background: linear-gradient(180deg, rgba(15,23,42,0.95), rgba(2,6,23,0.95));
-    border: 1px solid rgba(148,163,184,0.1);
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
-    animation: skillCardFadeUp 0.7s ease both, skillBorderPulse 3s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+    min-height: 280px;
+    padding: 20px;
+    border-radius: 18px;
+    background: linear-gradient(
+        145deg,
+        rgba(30, 41, 59, 0.82),
+        rgba(15, 23, 42, 0.92)
+    );
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.20);
+    backdrop-filter: blur(14px);
+    transition:
+        transform 0.35s ease,
+        border-color 0.35s ease,
+        box-shadow 0.35s ease;
+    animation: skillCardIn 0.7s ease both;
+}
+
+.skill-card:nth-child(1) { animation-delay: 0.05s; }
+.skill-card:nth-child(2) { animation-delay: 0.12s; }
+.skill-card:nth-child(3) { animation-delay: 0.19s; }
+.skill-card:nth-child(4) { animation-delay: 0.26s; }
+
+.skill-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+        135deg,
+        rgba(129, 140, 248, 0.55),
+        rgba(167, 139, 250, 0.18),
+        rgba(34, 211, 238, 0.35)
+    );
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.skill-card-glow {
+    position: absolute;
+    width: 130px;
+    height: 130px;
+    top: -55px;
+    right: -50px;
+    border-radius: 50%;
+    background: rgba(129, 140, 248, 0.18);
+    filter: blur(28px);
+    pointer-events: none;
+    animation: skillGlow 4s ease-in-out infinite;
 }
 
 .skill-card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-6px);
+    border-color: rgba(167, 139, 250, 0.5);
+    box-shadow:
+        0 18px 38px rgba(0, 0, 0, 0.28),
+        0 0 24px rgba(99, 102, 241, 0.10);
 }
 
-.skill-card:nth-child(1) { animation-delay: 0.06s, 0.06s; }
-.skill-card:nth-child(2) { animation-delay: 0.14s, 0.14s; }
-.skill-card:nth-child(3) { animation-delay: 0.22s, 0.22s; }
-.skill-card:nth-child(4) { animation-delay: 0.3s, 0.3s; }
+/* Category accent */
+.skill-card--backend { --skill-accent: #8b5cf6; }
+.skill-card--aiml { --skill-accent: #a78bfa; }
+.skill-card--languages { --skill-accent: #6366f1; }
+.skill-card--tools { --skill-accent: #22d3ee; }
 
-.skill-card--backend {
-    border-color: rgba(139, 92, 246, 0.55);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(139, 92, 246, 0.18);
+.skill-card-header {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
 }
 
-.skill-card--aiml {
-    border-color: rgba(167, 139, 250, 0.55);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(167, 139, 250, 0.2);
+.skill-card-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #f8fafc;
 }
 
-.skill-card--languages {
-    border-color: rgba(124, 58, 237, 0.55);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(124, 58, 237, 0.2);
+.skill-card-header p {
+    margin: 3px 0 0;
+    font-size: 11px;
+    color: #94a3b8;
 }
 
-.skill-card--tools {
-    border-color: rgba(192, 132, 252, 0.55);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 0 1px rgba(192, 132, 252, 0.2);
+.skill-icon {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    color: white;
+    font-size: 16px;
+    background:
+        linear-gradient(135deg, var(--skill-accent), rgba(34, 211, 238, 0.8));
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.18);
+    transition: transform 0.3s ease;
 }
 
-@keyframes skillCardFadeUp {
+.skill-card:hover .skill-icon {
+    transform: rotate(-5deg) scale(1.06);
+}
+
+.skill-list {
+    position: relative;
+    z-index: 1;
+}
+
+.skill-row {
+    margin-bottom: 13px;
+}
+
+.skill-row:last-child {
+    margin-bottom: 0;
+}
+
+.skill-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.skill-name {
+    font-size: 12px;
+    color: #e2e8f0;
+    font-weight: 500;
+}
+
+.skill-percent {
+    font-size: 10px;
+    color: #a5b4fc;
+    font-weight: 600;
+}
+
+.skill-track {
+    width: 100%;
+    height: 5px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.skill-fill {
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(
+        90deg,
+        var(--skill-accent),
+        #22d3ee
+    );
+    box-shadow: 0 0 10px rgba(129, 140, 248, 0.35);
+    transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Entrance animation */
+@keyframes skillCardIn {
     from {
         opacity: 0;
-        transform: translateY(24px);
+        transform: translateY(24px) scale(0.97);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
 }
 
-@keyframes skillBorderPulse {
+@keyframes skillGlow {
     0%, 100% {
-        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        transform: translate(0, 0) scale(1);
+        opacity: 0.65;
     }
     50% {
-        box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 14px rgba(139, 92, 246, 0.26);
+        transform: translate(-10px, 8px) scale(1.12);
+        opacity: 0.95;
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .skill-card {
+    .skill-card,
+    .skill-card-glow {
         animation: none;
+    }
+
+    .skill-fill {
         transition: none;
     }
 }
 
-/* HEADER */
-.skill-card-header {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 25px;
+/* Tablet */
+@media (max-width: 1200px) {
+    .skills-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
-.skill-card-header h3 {
-    font-size: 18px;
-    margin-bottom: 2px;
-}
+/* Mobile */
+@media (max-width: 768px) {
+    .skills-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
 
-.skill-card-header p {
-    font-size: 13px;
-    color: var(--text-secondary);
-}
-
-/* ICON */
-/* SKILL ICON – PERFECT CIRCLE */
-
-/* ROW */
-.skill-row {
-    margin-bottom: 18px;
-}
-
-.skill-row span {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    margin-bottom: 6px;
-}/* SKILL ICON – SIMPLE NAVY ICON ONLY */
-.skill-icon {
-    width: auto;
-    height: auto;
-    background: none;
-    border: none;
-    box-shadow: none;
-
-    color: #8113d6; /* NAVY BLUE */
-    font-size: 24px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-
-/* BAR */
-.skill-track {
-    width: 100%;
-    height: 8px;
-    background: rgba(255,255,255,0.08);
-    border-radius: 50px;
-    overflow: hidden;
-}
-
-.skill-fill {
-    height: 100%;
-    width: 0;
-    border-radius: 50px;
-    transition: width 1.4s ease, box-shadow 0.6s ease;
-}
-
-
-@keyframes fillSkill {
-    from { width: 0; }
-    to { width: inherit; }
+    .skill-card {
+        min-height: auto;
+        padding: 18px;
+    }
 }
 
         /* Contact Section */
@@ -2047,238 +2133,207 @@ button:active {
 
         <div class="skills-grid">
 
-            <!-- Backend -->
+            <!-- Backend & Databases -->
             <div class="skill-card skill-card--backend">
+                <div class="skill-card-glow"></div>
                 <div class="skill-card-header">
                     <div class="skill-icon">
-                        <i class="fas fa-database"></i>
+                        <i class="fas fa-server"></i>
                     </div>
                     <div>
                         <h3>Backend & Databases</h3>
-                       
+                        <p>APIs & data systems</p>
                     </div>
-                    <div class="skill-fill" data-percent="85"></div>
-<div class="skill-fill" data-percent="82"></div>
-
                 </div>
 
-                <div class="skill-row">
-                    <div class="skill-top">
-                        <span class="skill-name">Express.js</span>
+                <div class="skill-list">
+                    <div class="skill-row">
+                        <div class="skill-top">
+                            <span class="skill-name">Express.js</span>
+                            <span class="skill-percent">85%</span>
+                        </div>
+                        <div class="skill-track">
+                            <div class="skill-fill" data-percent="85"></div>
+                        </div>
                     </div>
 
-                    <div class="skill-fill" data-percent="85"></div>
-<div class="skill-fill" data-percent="82"></div>
-
-                </div>
-
-                <div class="skill-row">
-                    <div class="skill-top">
-                        <span class="skill-name">MySQL</span>
+                    <div class="skill-row">
+                        <div class="skill-top">
+                            <span class="skill-name">MySQL</span>
+                            <span class="skill-percent">85%</span>
+                        </div>
+                        <div class="skill-track">
+                            <div class="skill-fill" data-percent="85"></div>
+                        </div>
                     </div>
-                
-                    <div class="skill-fill" data-percent="85"></div>
-<div class="skill-fill" data-percent="82"></div>
 
-                </div>
-                 <div class="skill-row">
-                    <div class="skill-top">
-                        <span class="skill-name">REST APIs</span>
-                        <!-- <span class="skill-percent">85%</span> -->
+                    <div class="skill-row">
+                        <div class="skill-top">
+                            <span class="skill-name">REST APIs</span>
+                            <span class="skill-percent">85%</span>
+                        </div>
+                        <div class="skill-track">
+                            <div class="skill-fill" data-percent="85"></div>
+                        </div>
                     </div>
-                    <!-- <div class="skill-track">
-                        <div class="skill-fill" style="width:85%"></div>
-                    </div> -->
-                    <div class="skill-fill" data-percent="85"></div>
-<div class="skill-fill" data-percent="82"></div>
-
                 </div>
             </div>
 
-            <!-- AI -->
+            <!-- AI & Machine Learning -->
             <div class="skill-card skill-card--aiml">
+                <div class="skill-card-glow"></div>
                 <div class="skill-card-header">
                     <div class="skill-icon">
                         <i class="fas fa-brain"></i>
                     </div>
                     <div>
                         <h3>AI & Machine Learning</h3>
-                
+                        <p>Data, ML & computer vision</p>
                     </div>
-                    <div class="skill-fill" data-percent="85"></div>
-<div class="skill-fill" data-percent="82"></div>
-
                 </div>
 
-                <div class="skill-row">
-                    <div class="skill-top">
-                        <span class="skill-name">Pandas</span>
-                        <!-- <span class="skill-percent">84%</span> -->
+                <div class="skill-list">
+                    <div class="skill-row">
+                        <div class="skill-top">
+                            <span class="skill-name">Pandas</span>
+                            <span class="skill-percent">84%</span>
+                        </div>
+                        <div class="skill-track">
+                            <div class="skill-fill" data-percent="84"></div>
+                        </div>
                     </div>
-                    <!-- <div class="skill-track">
-                        <div class="skill-fill" style="width:84%"></div>
-                    </div> -->
-                    <div class="skill-fill" data-percent="85"></div>
-<div class="skill-fill" data-percent="82"></div>
 
-                </div>
-
-                <div class="skill-row">
-                    <div class="skill-top">
-                        <span class="skill-name">NumPy</span>
-                        <!-- <span class="skill-percent">83%</span> -->
+                    <div class="skill-row">
+                        <div class="skill-top">
+                            <span class="skill-name">NumPy</span>
+                            <span class="skill-percent">83%</span>
+                        </div>
+                        <div class="skill-track">
+                            <div class="skill-fill" data-percent="83"></div>
+                        </div>
                     </div>
-                    <!-- <div class="skill-track">
-                        <div class="skill-fill" style="width:83%"></div>
-                    </div> -->
-                    <div class="skill-fill" data-percent="85"></div>
-<div class="skill-fill" data-percent="82"></div>
 
-                </div>
-
-                <div class="skill-row">
-                    <div class="skill-top">
-                        <span class="skill-name">Scikit-learn</span>
-                        <!-- <span class="skill-percent">70%</span> -->
+                    <div class="skill-row">
+                        <div class="skill-top">
+                            <span class="skill-name">Scikit-learn</span>
+                            <span class="skill-percent">70%</span>
+                        </div>
+                        <div class="skill-track">
+                            <div class="skill-fill" data-percent="70"></div>
+                        </div>
                     </div>
-                    <!-- <div class="skill-track">
-                        <div class="skill-fill" style="width:70%"></div>
-                    </div> -->
-                    <div class="skill-fill" data-percent="85"></div>
-<div class="skill-fill" data-percent="82"></div>
 
-                </div>
-                 <div class="skill-row">
-                    <div class="skill-top">
-                        <span class="skill-name">TensorFlow</span>
-                        <!-- <span class="skill-percent">70%</span> -->
+                    <div class="skill-row">
+                        <div class="skill-top">
+                            <span class="skill-name">TensorFlow</span>
+                            <span class="skill-percent">70%</span>
+                        </div>
+                        <div class="skill-track">
+                            <div class="skill-fill" data-percent="70"></div>
+                        </div>
                     </div>
-                    <!-- <div class="skill-track">
-                        <div class="skill-fill" style="width:70%"></div>
-                    </div> -->
-                    <div class="skill-fill" data-percent="85"></div>
-<div class="skill-fill" data-percent="82"></div>
 
-                </div>
-                 <div class="skill-row">
-                    <div class="skill-top">
-                        <span class="skill-name">OpenCV</span>
-                        <!-- <span class="skill-percent">70%</span> -->
+                    <div class="skill-row">
+                        <div class="skill-top">
+                            <span class="skill-name">OpenCV</span>
+                            <span class="skill-percent">70%</span>
+                        </div>
+                        <div class="skill-track">
+                            <div class="skill-fill" data-percent="70"></div>
+                        </div>
                     </div>
-                    <!-- <div class="skill-track">
-                        <div class="skill-fill" style="width:70%"></div>
-                    </div> -->
-                    <div class="skill-fill" data-percent="85"></div>
-<div class="skill-fill" data-percent="82"></div>
 
-                </div>
-                 <div class="skill-row">
-                    <div class="skill-top">
-                        <span class="skill-name">MediaPipe</span>
-                        <!-- <span class="skill-percent">70%</span> -->
+                    <div class="skill-row">
+                        <div class="skill-top">
+                            <span class="skill-name">MediaPipe</span>
+                            <span class="skill-percent">70%</span>
+                        </div>
+                        <div class="skill-track">
+                            <div class="skill-fill" data-percent="70"></div>
+                        </div>
                     </div>
-                    <!-- <div class="skill-track">
-                        <div class="skill-fill" style="width:70%"></div>
-                    </div> -->
-                    <div class="skill-fill" data-percent="85"></div>
-<div class="skill-fill" data-percent="82"></div>
-
                 </div>
             </div>
 
             <!-- Languages -->
             <div class="skill-card skill-card--languages">
+                <div class="skill-card-glow"></div>
                 <div class="skill-card-header">
                     <div class="skill-icon">
                         <i class="fas fa-code"></i>
                     </div>
                     <div>
                         <h3>Languages</h3>
-                        
+                        <p>Core programming</p>
                     </div>
-                    <div class="skill-fill" data-percent="85"></div>
-<div class="skill-fill" data-percent="82"></div>
-
                 </div>
 
-                <div class="skill-row">
-                    <div class="skill-top">
-                        <span class="skill-name">Java</span>
-                        <!-- <span class="skill-percent">88%</span> -->
+                <div class="skill-list">
+                    <div class="skill-row">
+                        <div class="skill-top">
+                            <span class="skill-name">Java</span>
+                            <span class="skill-percent">88%</span>
+                        </div>
+                        <div class="skill-track">
+                            <div class="skill-fill" data-percent="88"></div>
+                        </div>
                     </div>
-                    <!-- <div class="skill-track">
-                        <div class="skill-fill" style="width:88%"></div>
-                    </div> -->
-                    <div class="skill-fill" data-percent="85"></div>
-<div class="skill-fill" data-percent="82"></div>
 
-                </div>
-
-                <div class="skill-row">
-                    <div class="skill-top">
-                        <span class="skill-name">Python</span>
-                        <!-- <span class="skill-percent">82%</span> -->
+                    <div class="skill-row">
+                        <div class="skill-top">
+                            <span class="skill-name">Python</span>
+                            <span class="skill-percent">82%</span>
+                        </div>
+                        <div class="skill-track">
+                            <div class="skill-fill" data-percent="82"></div>
+                        </div>
                     </div>
-                    <!-- <div class="skill-track">
-                        <div class="skill-fill" style="width:82%"></div>
-                    </div> -->
-                    <div class="skill-fill" data-percent="85"></div>
-<div class="skill-fill" data-percent="82"></div>
 
-                </div>
-
-                <div class="skill-row">
-                    <div class="skill-top">
-                        <span class="skill-name">JavaScript (ES6+)</span>
-                        <!-- <span class="skill-percent">60%</span> -->
+                    <div class="skill-row">
+                        <div class="skill-top">
+                            <span class="skill-name">JavaScript (ES6+)</span>
+                            <span class="skill-percent">60%</span>
+                        </div>
+                        <div class="skill-track">
+                            <div class="skill-fill" data-percent="60"></div>
+                        </div>
                     </div>
-                    <!-- <div class="skill-track">
-                        <div class="skill-fill" style="width:60%"></div>
-                    </div> -->
-                    <div class="skill-fill" data-percent="85"></div>
-<div class="skill-fill" data-percent="82"></div>
-
                 </div>
             </div>
 
-            <!-- Tools -->
+            <!-- Tools & Platforms -->
             <div class="skill-card skill-card--tools">
+                <div class="skill-card-glow"></div>
                 <div class="skill-card-header">
                     <div class="skill-icon">
-                        <i class="fas fa-tools"></i>
+                        <i class="fas fa-toolbox"></i>
                     </div>
                     <div>
                         <h3>Tools & Platforms</h3>
+                        <p>Development workflow</p>
                     </div>
-                    <div class="skill-fill" data-percent="85"></div>
-<div class="skill-fill" data-percent="82"></div>
-
                 </div>
 
-                <div class="skill-row">
-                    <div class="skill-top">
-                        <span class="skill-name">GitHub</span>
-                        <!-- <span class="skill-percent">88%</span> -->
+                <div class="skill-list">
+                    <div class="skill-row">
+                        <div class="skill-top">
+                            <span class="skill-name">GitHub</span>
+                            <span class="skill-percent">88%</span>
+                        </div>
+                        <div class="skill-track">
+                            <div class="skill-fill" data-percent="88"></div>
+                        </div>
                     </div>
-                    <!-- <div class="skill-track">
-                        <div class="skill-fill" style="width:88%"></div>
-                    </div> -->
-                    <div class="skill-fill" data-percent="85"></div>
-<div class="skill-fill" data-percent="82"></div>
 
-                </div>
-
-                <div class="skill-row">
-                    <div class="skill-top">
-                        <span class="skill-name">Linux</span>
-                        <!-- <span class="skill-percent">82%</span> -->
+                    <div class="skill-row">
+                        <div class="skill-top">
+                            <span class="skill-name">Linux</span>
+                            <span class="skill-percent">82%</span>
+                        </div>
+                        <div class="skill-track">
+                            <div class="skill-fill" data-percent="82"></div>
+                        </div>
                     </div>
-                    <!-- <div class="skill-track">
-                        <div class="skill-fill" style="width:82%"></div>
-                    </div> -->
-                    <div class="skill-fill" data-percent="85"></div>
-<div class="skill-fill" data-percent="82"></div>
-
                 </div>
             </div>
 
@@ -2608,30 +2663,26 @@ button:active {
                 menuIcon.classList.remove('active');
             }
         });
+        // Animate skill progress bars
+        const skillBars = document.querySelectorAll('.skill-fill');
 
-        document.querySelectorAll('.skill-fill').forEach(bar => {
-            const percent = parseInt(bar.dataset.percent);
-            bar.style.width = percent + '%';
+        const skillObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
 
-            if (percent >= 90) {
-                bar.style.background = 'linear-gradient(90deg, #8b5cf6, #22d3ee)';
-                bar.style.boxShadow = '0 0 14px rgba(139,92,246,0.9)';
-            } 
-            else if (percent >= 80) {
-                bar.style.background = 'linear-gradient(90deg, #7c6df6, #38bdf8)';
-                bar.style.boxShadow = '0 0 12px rgba(139,92,246,0.6)';
-            } 
-            else if (percent >= 70) {
-                bar.style.background = 'linear-gradient(90deg, #6d5df6, #60a5fa)';
-                bar.style.boxShadow = '0 0 8px rgba(139,92,246,0.4)';
-            } 
-            else {
-                bar.style.background = 'linear-gradient(90deg, #64748b, #475569)';
-                bar.style.boxShadow = 'none';
-            }
-        });
+                const bar = entry.target;
+                const percent = parseInt(bar.dataset.percent, 10) || 0;
 
-        // Modal functionality
+                requestAnimationFrame(() => {
+                    bar.style.width = percent + '%';
+                });
+
+                observer.unobserve(bar);
+            });
+        }, { threshold: 0.25 });
+
+        skillBars.forEach(bar => skillObserver.observe(bar));
+// Modal functionality
         const successModal = document.getElementById('successModal');
         const errorModal = document.getElementById('errorModal');
         const modalCloseBtn = document.getElementById('modalCloseBtn');
